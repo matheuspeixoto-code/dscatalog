@@ -2,18 +2,18 @@ package com.dscatalog.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.dscatalog.dto.CategoryDTO;
-import com.dscatalog.exception.EntityNotFoundException;
+import com.dscatalog.exception.ControllerNotFoundException;
 import com.dscatalog.model.Category;
 import com.dscatalog.repository.CategoryRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -34,7 +34,7 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryDTO findById (Long id) {
 		Optional<Category> obj = categoryRepository.findById(id);
-		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+		Category entity = obj.orElseThrow(() -> new ControllerNotFoundException("Entity not found"));
 		
 		return new CategoryDTO(entity);
 	}
@@ -46,6 +46,22 @@ public class CategoryService {
 		entity = categoryRepository.save(entity);
 		
 		return new CategoryDTO(entity);
+	}
+
+	
+	@Transactional
+	public CategoryDTO update(Long id,CategoryDTO dto) {
+		try {
+			
+			Category entity = categoryRepository.getReferenceById(id);
+			
+			entity.setName(dto.getName());
+			entity= categoryRepository.save(entity);
+			
+			return new CategoryDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ControllerNotFoundException("Id not found "+id);
+		}
 	}
 	
 	
