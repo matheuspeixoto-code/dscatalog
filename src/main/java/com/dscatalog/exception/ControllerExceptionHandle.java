@@ -14,8 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ControllerExceptionHandle {
 	
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<StandardError>entityNotFound(EntityNotFoundException e, HttpServletRequest request){
+	@ExceptionHandler(ControllerNotFoundException.class)
+	public ResponseEntity<StandardError>entityNotFound(ControllerNotFoundException e, HttpServletRequest request){
 		StandardError err= new StandardError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(HttpStatus.NOT_FOUND.value());
