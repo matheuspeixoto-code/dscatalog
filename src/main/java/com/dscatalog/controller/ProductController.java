@@ -62,7 +62,7 @@ public class ProductController {
 		
 	}
 	
-	
+		
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> insert(@PathVariable("id") Long id  ,@RequestBody ProductDTO dto){
 		dto= ProductService.update(id,dto);
