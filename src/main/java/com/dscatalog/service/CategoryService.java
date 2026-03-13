@@ -63,6 +63,21 @@ public class CategoryService {
 			throw new ControllerNotFoundException("Id not found "+id);
 		}
 	}
+
+	
+	@Transactional
+	public CategoryDTO delete(Long id) {
+		try {
+			Optional<Category> entity = categoryRepository.findById(id);
+			categoryRepository.delete(entity.get());
+			
+			return new CategoryDTO(entity.get());
+			
+		} catch (Exception e) {
+			throw new ControllerNotFoundException("Id not found "+id);
+		}
+		
+	}
 	
 	
 }
