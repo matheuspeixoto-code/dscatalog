@@ -2,12 +2,15 @@ package com.dscatalog.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
+import java.util.HashSet;
 
 @Entity
 public class Category implements Serializable{
@@ -21,7 +24,17 @@ public class Category implements Serializable{
 	
 	private String name;
 	
+	@ManyToMany(mappedBy = "categories")
+	private Set<Product> products  =new HashSet<>();
 	
+	
+	
+	public Set<Product> getProducts() {
+		return products;
+	}
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -34,6 +47,8 @@ public class Category implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
 	
 	
 	@Override
