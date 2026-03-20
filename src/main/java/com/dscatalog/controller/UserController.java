@@ -21,15 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dscatalog.dto.UserDTO;
-
+import com.dscatalog.dto.UserInsertDTO;
 import com.dscatalog.service.UserService;
+
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
 	
 	@Autowired
-	private UserService UserService;
+	private UserService userService;
 	
 	@GetMapping(value = "")
 	public ResponseEntity<Page<UserDTO>> findAll(
@@ -41,30 +42,30 @@ public class UserController {
 		
 		PageRequest pageRequest= PageRequest.of(page,linesPerPage,Direction.valueOf(direction) ,orderBy);
 		
-		Page<UserDTO> list = UserService.findAllPaged(pageRequest);
+		Page<UserDTO> list = userService.findAllPaged(pageRequest);
 		
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id){
-		UserDTO dto = UserService.findById(id);
+		UserDTO dto = userService.findById(id);
 		return ResponseEntity.ok().body(dto);
 		
 	}
 	
 	@PostMapping
-	public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto){
-		dto= UserService.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto);
+	public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto){
+		UserDTO user= userService.insert(dto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+		return ResponseEntity.created(uri).body(user);
 		
 	}
 	
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> insert(@PathVariable("id") Long id  ,@RequestBody UserDTO dto){
-		dto= UserService.update(id,dto);
+		dto= userService.update(id,dto);
 
 		return ResponseEntity.ok().body(dto);
 		
@@ -72,7 +73,7 @@ public class UserController {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> delete(@PathVariable("id") Long id  ){
-		UserDTO dto = UserService.delete(id);
+		UserDTO dto = userService.delete(id);
 		
 		return ResponseEntity.ok().body(dto);
 	}
