@@ -4,10 +4,14 @@ import java.io.Serializable;
 
 import com.dscatalog.model.Category;
 
+import jakarta.validation.constraints.Size;
+
 public class CategoryDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
+	
+	@Size(min = 5,max = 60,message = "Deve ter entre 5 e 60 caracteres")
 	private String name;
 	
 
