@@ -6,6 +6,8 @@ import java.util.Set;
 
 import com.dscatalog.model.User;
 
+import jakarta.persistence.Column;
+
 public class UserDTO implements Serializable {
 	
 	
@@ -16,6 +18,7 @@ public class UserDTO implements Serializable {
 	private String firstName;
 	
 	private String lastName;
+	
 	
 	private String email;
 	
