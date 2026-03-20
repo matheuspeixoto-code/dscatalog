@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dscatalog.model.Role;
 import com.dscatalog.dto.RoleDTO;
 import com.dscatalog.dto.UserDTO;
+import com.dscatalog.dto.UserInsertDTO;
 import com.dscatalog.exception.ControllerNotFoundException;
 import com.dscatalog.model.User;
 import com.dscatalog.repository.RoleRepository;
@@ -23,6 +25,8 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -49,9 +53,10 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO insert(UserDTO dto) {
+	public UserDTO insert(UserInsertDTO dto) {
 		User entity = new User();
 		copyDtoToEntity(dto, entity);
+		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
 		entity = userRepository.save(entity);
 		
 		return new UserDTO(entity);
