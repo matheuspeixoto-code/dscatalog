@@ -7,6 +7,10 @@ import java.util.Set;
 import com.dscatalog.model.User;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class UserDTO implements Serializable {
 	
@@ -15,12 +19,15 @@ public class UserDTO implements Serializable {
 
 	private Long id;
 	
+	@Size(min = 5,max = 60,message = "Deve ter entre 5 e 60 caracteres")
+	@NotBlank(message = "Campo obrigatorio")
 	private String firstName;
 	
 	private String lastName;
 	
-	
+	@Email(message = "Inserir um email valido")
 	private String email;
+	
 	
 	private String password;
 	
